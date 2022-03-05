@@ -2,7 +2,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 
-const PORT = process.send.PORT || 3001;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 // basic middleware boilerplate
@@ -20,11 +20,26 @@ const db = mysql.createConnection(
   console.log('Nice, it worked and you connected.')
 );
 
+
+
+// route for /api/movies to render list of movies.
+app.get('/api/movies', (req, res) => {
+  const sql_string = `SELECT id, movie_name AS movie FROM movies`;
+
+  db.query(sql_string, (err, results) => {
+    if (err) {
+      console.log(err);
+      return;
+    } else
+    res.json(results);
+  });
+});
+
 // set 404 status for any other route
 app.use((req, res) => {
-  res.status(404).end();
-});
-// set up server to listen on port 3001.
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    res.status(404).end();
+  });
+  // set up server to listen on port 3001.
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });

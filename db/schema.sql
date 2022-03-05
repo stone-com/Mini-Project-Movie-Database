@@ -1,5 +1,6 @@
 DROP DATABASE IF EXISTS movies_db;
 CREATE DATABASE movies_db;
+USE movies_db;
 -- Create table for movie names
 CREATE TABLE movies (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
