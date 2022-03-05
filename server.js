@@ -43,6 +43,22 @@ app.post('/api/add-movie', (req,res) => {
         } 
         console.log('success')
     })
+});
+
+// route to delete reviews
+app.delete('/api/movie/:id', (req,res) => {
+    const sql_string = 'DELETE FROM movies WHERE id = ?';
+    // console.log(req.params.id)
+    const toBeDeleted = req.params.id;
+    db.query(sql_string, toBeDeleted, (err, result) => {
+        if (err) {
+            console.log(err);
+        } else if (result.affectedRows === 0) {
+            console.log('There are no movies with that ID. Try again homie.');
+            return;
+        }
+        console.log(`The movie with ID: ${toBeDeleted} has been deleted.`)
+    })
 })
 
 // set 404 status for any other route
