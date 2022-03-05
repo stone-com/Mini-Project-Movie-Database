@@ -20,8 +20,6 @@ const db = mysql.createConnection(
   console.log('Nice, it worked and you connected.')
 );
 
-
-
 // route for /api/movies to render list of movies.
 app.get('/api/movies', (req, res) => {
   const sql_string = `SELECT id, movie_name AS movie FROM movies`;
@@ -30,16 +28,28 @@ app.get('/api/movies', (req, res) => {
     if (err) {
       console.log(err);
       return;
-    } else
-    res.json(results);
+    } else res.json(results);
   });
 });
 
+// route for adding movies
+app.post('/api/add-movie', (req,res) => {
+    const movie_add = (req.body.movie_name);
+    const sql_string = `INSERT INTO movies (movie_name) VALUES(?)`;
+    
+    db.query(sql_string, movie_add, (err) => {
+        if(err) {
+            console.log(err)
+        } 
+        console.log('success')
+    })
+})
+
 // set 404 status for any other route
 app.use((req, res) => {
-    res.status(404).end();
-  });
-  // set up server to listen on port 3001.
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  res.status(404).end();
+});
+// set up server to listen on port 3001.
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
